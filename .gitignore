@@ -1,0 +1,28 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+/vcs.xml
+/misc.xml
+/modules.xml
+/Bank Management.xml
+/uiDesigner.xml
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+target/
+
+# Compiled class files
+*.class
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+
+# Temporary files
+*.tmp
+*.swp
+
