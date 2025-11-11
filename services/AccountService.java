@@ -6,9 +6,9 @@ public interface AccountService {
 
     public Account createAccount(String customerName,String accountType, double initialBalance);
 
-    public void deposit(double initialBalance);
+    public Account deposit(long accountNumber, double amount);
 //
-//    public void withdrawal(int amount);
+    public Account withdrawal(long accountNumber, double amount);
 //
 //    public void bankBalance();
 //

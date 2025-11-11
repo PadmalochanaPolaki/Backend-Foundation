@@ -19,7 +19,8 @@ public class Main {
                 case 1 -> createAccount();
                 case 2 -> depositAmount();
                 case 3 -> withdrawalAmount();
-                case 4 -> deleteAccount();
+                case 4 -> viewDetails();
+                case 5 -> deleteAccount();
                 default -> System.out.println("enter a valid choice");
             }
         }
@@ -67,11 +68,62 @@ public class Main {
     }
 
     public static void depositAmount(){
-        System.out.println("amount deposited");
+        System.out.println("enter account number");
+        long accountNumber = sc.nextLong();
+
+        System.out.println("enter deposit amount");
+        double amount = sc.nextDouble();
+
+        Map<Long,Account> accounts= new HashMap<>();
+
+        Account account = accountService.deposit(accountNumber,amount);
+        accounts.put(account.getAccountNumber(),account);
+
+        System.out.println("------------------------------");
+        System.out.println("Account details");
+        for(Map.Entry<Long,Account> entry : accounts.entrySet()){
+            Account acc = entry.getValue();
+            System.out.println("------------------------------");
+            System.out.println("customerName : " + acc.getCustomerName());
+            System.out.println("accountNumber : " + acc.getAccountNumber());
+            System.out.println("accountType : " + acc.getAccountType());
+            System.out.println("balance : " + acc.getBalance());
+            System.out.println("status : " + acc.getStatus());
+            System.out.println("status : " + acc.getTransactionList());
+            System.out.println("------------------------------");
+        }
+
     }
 
     public static void withdrawalAmount(){
-        System.out.println("amount withdrawal is happening ");
+        System.out.println("enter account number");
+        long accountNumber = sc.nextLong();
+
+        System.out.println("enter deposit amount");
+        double amount = sc.nextDouble();
+
+        Map<Long,Account> accounts= new HashMap<>();
+
+        Account account = accountService.withdrawal(accountNumber,amount);
+        accounts.put(account.getAccountNumber(),account);
+
+        System.out.println("------------------------------");
+        System.out.println("Account details");
+        for(Map.Entry<Long,Account> entry : accounts.entrySet()){
+            Account acc = entry.getValue();
+            System.out.println("------------------------------");
+            System.out.println("customerName : " + acc.getCustomerName());
+            System.out.println("accountNumber : " + acc.getAccountNumber());
+            System.out.println("accountType : " + acc.getAccountType());
+            System.out.println("balance : " + acc.getBalance());
+            System.out.println("status : " + acc.getStatus());
+            System.out.println("------------------------------");
+        }
+
+    }
+
+    public static void viewDetails(){
+        System.out.println();
     }
     public static void deleteAccount(){
         System.out.println("account has been deleted");

@@ -6,20 +6,18 @@ import java.util.UUID;
 
 public class Transaction {
     private String transactionId;
-    private String accountNumber;
+    private long accountNumber;
     private String type; // "DEPOSIT", "WITHDRAWAL", "TRANSFER"
     private double amount;
     private LocalDateTime dateTime;
     private String description;
 
     // Constructors
-    public Transaction(String accountNumber, String type, double amount, String description) {
+    public Transaction(long accountNumber, String type) {
         this.transactionId = UUID.randomUUID().toString(); // unique ID
         this.accountNumber = accountNumber;
         this.type = type;
-        this.amount = amount;
         this.dateTime = LocalDateTime.now();
-        this.description = description;
     }
 
     public String getTransactionId() {
@@ -30,11 +28,11 @@ public class Transaction {
         this.transactionId = transactionId;
     }
 
-    public String getAccountNumber() {
+    public long getAccountNumber() {
         return accountNumber;
     }
 
-    public void setAccountNumber(String accountNumber) {
+    public void setAccountNumber(long accountNumber) {
         this.accountNumber = accountNumber;
     }
 
@@ -81,5 +79,17 @@ public class Transaction {
     @Override
     public int hashCode() {
         return Objects.hash(transactionId, accountNumber, type, amount, dateTime, description);
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "transactionId='" + transactionId + '\'' +
+                ", accountNumber=" + accountNumber +
+                ", type='" + type + '\'' +
+                ", amount=" + amount +
+                ", dateTime=" + dateTime +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
