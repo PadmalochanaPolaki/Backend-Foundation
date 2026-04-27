@@ -1,70 +1,105 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+             https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.5</version> <!-- FIXED: removed SNAPSHOT, use stable -->
+		<version>3.4.5</version>
 		<relativePath/>
 	</parent>
+
 	<groupId>com.demo</groupId>
 	<artifactId>task</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name/>
-	<description/>
+	<name>task</name>
+	<description>Task Demo Project</description>
 
+	<!-- ═══════════════════════════════════════════
+         PROPERTIES
+         Define all versions here, single source of truth
+         ═══════════════════════════════════════════ -->
 	<properties>
 		<java.version>17</java.version>
-		<mapstruct.version>1.5.5.Final</mapstruct.version> <!-- ADDED -->
+		<mapstruct.version>1.5.5.Final</mapstruct.version>
+		<lombok.version>1.18.32</lombok.version>
 	</properties>
 
+	<!-- ═══════════════════════════════════════════
+         DEPENDENCIES
+         ═══════════════════════════════════════════ -->
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
+
+		<!-- Spring Boot Core -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+
+		<!-- Dev Tools -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+
+		<!-- Database -->
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
+		<!-- Lombok
+             optional=true means it won't be
+             included in final packaged jar -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
-			<!-- FIXED: removed hardcoded version, parent manages it -->
-		</dependency>
 
-		<!-- ADDED: MapStruct -->
+		<!-- MapStruct runtime annotations -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 			<version>${mapstruct.version}</version>
 		</dependency>
+
+		<!-- Testing -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
+	<!-- ═══════════════════════════════════════════
+         BUILD
+         ═══════════════════════════════════════════ -->
 	<build>
 		<plugins>
+
+			<!-- Spring Boot packaging plugin
+                 Exclude Lombok from the final JAR
+                 since it's only needed at compile time -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -78,55 +113,44 @@
 				</configuration>
 			</plugin>
 
+			<!-- Compiler plugin
+                 KEY RULES:
+                 1. No <executions> needed — single <configuration>
+                    applies to both compile + test-compile phases
+                 2. annotationProcessorPaths is ISOLATED from
+                    dependency management — versions are MANDATORY here
+                 3. Lombok MUST be listed before MapStruct so that
+                    getters/setters exist when MapStruct generates impls
+                 4. <release> pins the Java version explicitly -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>default-compile</id>
-						<phase>compile</phase>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-						<configuration>
-							<annotationProcessorPaths>
-								<path>
-									<groupId>org.projectlombok</groupId>
-									<artifactId>lombok</artifactId>
-								</path>
-								<!-- ADDED: MapStruct processor -->
-								<!-- IMPORTANT: lombok must come BEFORE mapstruct -->
-								<path>
-									<groupId>org.mapstruct</groupId>
-									<artifactId>mapstruct-processor</artifactId>
-									<version>${mapstruct.version}</version>
-								</path>
-							</annotationProcessorPaths>
-						</configuration>
-					</execution>
-					<execution>
-						<id>default-testCompile</id>
-						<phase>test-compile</phase>
-						<goals>
-							<goal>testCompile</goal>
-						</goals>
-						<configuration>
-							<annotationProcessorPaths>
-								<path>
-									<groupId>org.projectlombok</groupId>
-									<artifactId>lombok</artifactId>
-								</path>
-								<!-- ADDED: MapStruct processor for tests too -->
-								<path>
-									<groupId>org.mapstruct</groupId>
-									<artifactId>mapstruct-processor</artifactId>
-									<version>${mapstruct.version}</version>
-								</path>
-							</annotationProcessorPaths>
-						</configuration>
-					</execution>
-				</executions>
+				<configuration>
+					<release>${java.version}</release>
+					<annotationProcessorPaths>
+
+						<!-- STEP 1: Lombok runs first
+                             Generates getters, setters, constructors -->
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>${lombok.version}</version>
+						</path>
+
+						<!-- STEP 2: MapStruct runs second
+                             Reads Lombok-generated methods to build
+                             the TaskMapperImpl class -->
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>${mapstruct.version}</version>
+						</path>
+
+					</annotationProcessorPaths>
+				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
+
 </project>

@@ -15,15 +15,22 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepo taskRepo;
     private final TaskMapper taskMapper;
 
-    TaskServiceImpl(TaskRepo taskRepo,TaskMapper taskMapper){
+    TaskServiceImpl(TaskMapper taskMapper,TaskRepo taskRepo){
         this.taskRepo = taskRepo;
         this.taskMapper = taskMapper;
     }
 
     @Override
     public TaskResponseDTO createTask(TaskRequestDTO dto) {
+
+        // Convert DTO to entity — do NOT set createdAt or updatedAt here
         Task task = taskMapper.toEntity(dto);
-        return taskMapper.toDTO(taskRepo.save(task));
+
+        // JPA + AuditingEntityListener sets createdAt and updatedAt HERE
+        Task savedTask = taskRepo.save(task);
+
+        // Map saved entity (now has audit values) to response
+        return taskMapper.toDTO(savedTask);
     }
 
     @Override
