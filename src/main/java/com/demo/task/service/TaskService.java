@@ -1,13 +1,15 @@
 package com.demo.task.service;
 
 
+import com.demo.task.dto.TaskRequestDTO;
+import com.demo.task.dto.TaskResponseDTO;
 import com.demo.task.entity.Task;
-import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
 public interface TaskService {
-    Task createTask(Task task);
+    TaskResponseDTO createTask(TaskRequestDTO taskRequestDto);
     List<Task> getAllTasks();
     Task getTaskById(Long id);
     Task updateTaskById(Long id, Task task);

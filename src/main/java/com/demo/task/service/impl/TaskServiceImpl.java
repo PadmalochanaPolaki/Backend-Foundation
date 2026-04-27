@@ -1,10 +1,11 @@
 package com.demo.task.service.impl;
 
+import com.demo.task.dto.TaskRequestDTO;
+import com.demo.task.dto.TaskResponseDTO;
 import com.demo.task.entity.Task;
+import com.demo.task.mappers.TaskMapper;
 import com.demo.task.repository.TaskRepo;
 import com.demo.task.service.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,15 +13,17 @@ import java.util.List;
 @Service
 public class TaskServiceImpl implements TaskService {
     private final TaskRepo taskRepo;
+    private final TaskMapper taskMapper;
 
-    TaskServiceImpl(TaskRepo taskRepo){
+    TaskServiceImpl(TaskRepo taskRepo,TaskMapper taskMapper){
         this.taskRepo = taskRepo;
+        this.taskMapper = taskMapper;
     }
 
     @Override
-    public Task createTask(Task task) {
-        
-        return taskRepo.save(task);
+    public TaskResponseDTO createTask(TaskRequestDTO dto) {
+        Task task = taskMapper.toEntity(dto);
+        return taskMapper.toDTO(taskRepo.save(task));
     }
 
     @Override

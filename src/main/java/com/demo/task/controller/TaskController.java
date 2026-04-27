@@ -1,10 +1,13 @@
 package com.demo.task.controller;
 
-import com.demo.task.dto.TaskRequestDto;
+import com.demo.task.ResponseDto;
+import com.demo.task.dto.TaskRequestDTO;
+import com.demo.task.dto.TaskResponseDTO;
 import com.demo.task.entity.Task;
+import com.demo.task.response.ApiResponse;
 import com.demo.task.service.TaskService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +25,12 @@ public class TaskController {
 
 
     @PostMapping("/createTask")
-    public ResponseEntity<Task> createTask(@Valid @RequestBody TaskRequestDto dto) {
-        Task task = dto.toEntity();
-        return ResponseEntity.ok(taskService.createTask(task));
+    public ResponseEntity<ApiResponse<TaskResponseDTO>> createTask(@Valid @RequestBody TaskRequestDTO taskRequestDto) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(ApiResponse.created(
+                        taskService.createTask(taskRequestDto),
+                        "Task created successfully"));
     }
 
     @GetMapping("/getAllTasks")
