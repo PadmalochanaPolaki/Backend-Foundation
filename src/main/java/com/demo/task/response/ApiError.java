@@ -1,6 +1,7 @@
 package com.demo.task.response;
 
 
+import com.demo.task.dto.FieldErrorDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
@@ -16,13 +17,13 @@ public class ApiError {
     private boolean success;
     private int statusCode;
     private String message;
-    private List<String> errors;        // validation errors
+    private List<FieldErrorDto> errors;        // validation errors
 
     @Builder.Default
     private LocalDateTime timestamp = LocalDateTime.now();
 
     // Validation errors - multiple
-    public static ApiError validationError(List<String> errors) {
+    public static ApiError validationError(List<FieldErrorDto> errors) {
         return ApiError.builder()
                 .success(false)
                 .statusCode(400)

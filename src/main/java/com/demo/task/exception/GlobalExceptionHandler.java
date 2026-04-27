@@ -1,6 +1,7 @@
 package com.demo.task.exception;
 
 
+import com.demo.task.dto.FieldErrorDto;
 import com.demo.task.response.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +19,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleValidation(
             MethodArgumentNotValidException ex) {
 
-        List<String> errors = ex.getBindingResult()
+        List<FieldErrorDto> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(FieldError::getDefaultMessage)
+                .map(e -> new FieldErrorDto(
+                        e.getField(),
+                        e.getDefaultMessage()
+                ))
                 .toList();
 
         return ResponseEntity
