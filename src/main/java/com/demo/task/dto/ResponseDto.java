@@ -1,6 +1,5 @@
-package com.demo.task;
+package com.demo.task.dto;
 
-import com.demo.task.dto.FieldErrorDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 public interface TaskMapper extends BaseMapper<Task, TaskResponseDTO> {
 
     // REQUEST → Entity (incoming)
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "taskId", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     Task toEntity(TaskRequestDTO dto);

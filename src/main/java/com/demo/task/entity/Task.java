@@ -25,25 +25,25 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // FIXED: was AUTO
-    @Column(name = "TLS_TASK_ID")
-    private Long id;
+    @Column(name = "TLS_TASK_RID")
+    private Long taskId;
 
     @Column(name = "TLS_TASK_NAME")
-    private String name;
+    private String taskName;
 
     @Column(name = "TLS_TASK_DESC")
-    private String description;
+    private String taskDescription;
 
     @Column(name = "TLS_TASK_PRIORITY")
     @Enumerated(EnumType.STRING)
-    private Priority priority;
+    private Priority taskPriority;
 
     @Column(name = "TLS_TASK_STATUS")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status taskStatus;
 
     @Column(name = "TLS_TASK_DUE_DATE")
-    private LocalDate dueDate;
+    private LocalDate taskDueDate;
 
     @CreatedDate
     @Column(name = "TLS_CREATED_DATE", updatable = false, nullable = false)

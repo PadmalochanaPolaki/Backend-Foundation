@@ -21,14 +21,15 @@ public class TaskRequestDTO {
 
     @NotBlank(message = "Title is required")
     @Size(min = 3, max = 100, message = "Title must be between 3 and 100 characters")
-    private String name;
+    private String taskName;
 
     @NotNull(message = "Priority is required")
-    private Priority priority;
+    private Priority taskPriority;
 
     @NotNull(message = "Status is required")
-    private Status status;
+    private Status taskStatus;
 
-    private String description;
-    private LocalDate dueDate;
+    @Size(max = 256,message = "Description cannot be more than 256 characters")
+    private String taskDescription;
+    private LocalDate taskDueDate;
 }

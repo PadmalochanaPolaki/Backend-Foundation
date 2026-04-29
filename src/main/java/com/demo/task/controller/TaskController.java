@@ -1,12 +1,11 @@
 package com.demo.task.controller;
 
-import com.demo.task.ResponseDto;
 import com.demo.task.dto.TaskRequestDTO;
 import com.demo.task.dto.TaskResponseDTO;
-import com.demo.task.entity.Task;
 import com.demo.task.response.ApiResponse;
 import com.demo.task.service.TaskService;
 import jakarta.validation.Valid;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,36 +24,34 @@ public class TaskController {
 
 
     @PostMapping("/createTask")
-    public ResponseEntity<ApiResponse<TaskResponseDTO>> createTask(@Valid @RequestBody TaskRequestDTO taskRequestDto) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(ApiResponse.created(
-                        taskService.createTask(taskRequestDto),
-                        "Task created successfully"));
+    public ResponseEntity<ApiResponse<TaskResponseDTO>> createTask(@Valid @RequestBody TaskRequestDTO taskRequestDto) throws BadRequestException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(taskService.createTask(taskRequestDto),
+                        "Task created successfully!"));
     }
 
     @GetMapping("/getAllTasks")
-    public List<Task> getAllTasks(){
-        return taskService.getAllTasks();
+    public ResponseEntity<ApiResponse<List<TaskResponseDTO>>> getAllTasks(){
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.ok(taskService.getAllTasks(),
+                "Tasks fetched successfully!"));
     }
 
     @GetMapping("/getTaskById/{id}")
-    public Task getTaskById(@PathVariable Long id){
-        return taskService.getTaskById(id);
+    public ResponseEntity<ApiResponse<TaskResponseDTO>> getTaskById(@PathVariable Long id) throws BadRequestException {
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.ok(taskService.getTaskById(id),
+                "Task Fetched successfully!"));
     }
 
     @PutMapping("/updateTaskById/{id}")
-    public Task updateTaskById(@PathVariable Long id, @RequestBody Task task){
-        return taskService.updateTaskById(id, task);
+    public ResponseEntity<ApiResponse<TaskResponseDTO>> updateTaskById(@PathVariable Long id, @Valid @RequestBody TaskRequestDTO task) {
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.created(taskService.updateTaskById(id, task),
+                "Task Updated successfully!"));
     }
 
-    @PatchMapping("/patchUpdateTaskById/{id}")
-    public Task patchUpdateTaskById(@PathVariable Long id, @RequestBody Task task){
-        return taskService.updateTaskById(id, task);
-    }
 
     @DeleteMapping("/deleteTaskById/{id}")
-    public String deleteTaskById(@PathVariable Long id){
-        return taskService.deleteTaskById(id);
+    public ResponseEntity<ApiResponse<Void>> deleteTaskById(@PathVariable Long id)  {
+
+        taskService.deleteTaskById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.deleted("Task deleted successfully"));
     }
 }
